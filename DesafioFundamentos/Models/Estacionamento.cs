@@ -1,10 +1,12 @@
+using System.Collections.Generic;
+
 namespace DesafioFundamentos.Models
 {
     public class Estacionamento
     {
-        private decimal precoInicial = 0;
-        private decimal precoPorHora = 0;
-        private List<string> veiculos = new List<string>();
+        private readonly decimal precoInicial = 0;
+        private readonly decimal precoPorHora = 0;
+        private readonly List<string> veiculos = [];
 
         public Estacionamento(decimal precoInicial, decimal precoPorHora)
         {
@@ -12,35 +14,25 @@ namespace DesafioFundamentos.Models
             this.precoPorHora = precoPorHora;
         }
 
-        public void AdicionarVeiculo()
-        {
-            // TODO: Pedir para o usuário digitar uma placa (ReadLine) e adicionar na lista "veiculos"
-            // *IMPLEMENTE AQUI*
-            Console.WriteLine("Digite a placa do veículo para estacionar:");
+        public void AdicionarVeiculo()        {
+            
+            Console.WriteLine("Digite a placa do veículo para estacionar:");      
+            veiculos.Add(Console.ReadLine()); 
+
         }
 
         public void RemoverVeiculo()
         {
             Console.WriteLine("Digite a placa do veículo para remover:");
-
-            // Pedir para o usuário digitar a placa e armazenar na variável placa
-            // *IMPLEMENTE AQUI*
-            string placa = "";
-
-            // Verifica se o veículo existe
+            string placa = Console.ReadLine();
+          
             if (veiculos.Any(x => x.ToUpper() == placa.ToUpper()))
             {
                 Console.WriteLine("Digite a quantidade de horas que o veículo permaneceu estacionado:");
-
-                // TODO: Pedir para o usuário digitar a quantidade de horas que o veículo permaneceu estacionado,
-                // TODO: Realizar o seguinte cálculo: "precoInicial + precoPorHora * horas" para a variável valorTotal                
-                // *IMPLEMENTE AQUI*
-                int horas = 0;
-                decimal valorTotal = 0; 
-
-                // TODO: Remover a placa digitada da lista de veículos
-                // *IMPLEMENTE AQUI*
-
+                int horas = Convert.ToInt32(Console.ReadLine());               
+                decimal valorTotal = this.precoInicial + this.precoPorHora * horas;
+                
+                veiculos.Remove(placa);
                 Console.WriteLine($"O veículo {placa} foi removido e o preço total foi de: R$ {valorTotal}");
             }
             else
@@ -49,19 +41,61 @@ namespace DesafioFundamentos.Models
             }
         }
 
-        public void ListarVeiculos()
-        {
-            // Verifica se há veículos no estacionamento
+        public void ListarVeiculos()       
+        {      
             if (veiculos.Any())
             {
-                Console.WriteLine("Os veículos estacionados são:");
-                // TODO: Realizar um laço de repetição, exibindo os veículos estacionados
-                // *IMPLEMENTE AQUI*
+                Console.WriteLine("Os veículos estacionados são:");                    
+                foreach (string veiculo in veiculos)
+                {
+                    Console.WriteLine($"- {veiculo}");
+                }
             }
             else
             {
                 Console.WriteLine("Não há veículos estacionados.");
             }
+        }
+
+        public void MostrarMenu()
+        {
+            bool exibirMenu = true;
+            while (exibirMenu)
+            {
+                Console.Clear();
+                Console.WriteLine("Digite a sua opção:");
+                Console.WriteLine("1 - Cadastrar veículo");
+                Console.WriteLine("2 - Remover veículo");
+                Console.WriteLine("3 - Listar veículos");
+                Console.WriteLine("4 - Encerrar");
+
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        AdicionarVeiculo();
+                        break;
+
+                    case "2":
+                        RemoverVeiculo();
+                        break;
+
+                    case "3":
+                        ListarVeiculos();
+                        break;
+
+                    case "4":
+                        exibirMenu = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Opção inválida");
+                        break;
+                }
+
+                Console.WriteLine("Pressione uma tecla para continuar");
+                Console.ReadLine();
+            }
+
         }
     }
 }
